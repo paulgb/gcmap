@@ -17,9 +17,9 @@ The `OpenFlights dataset <http://openflights.org/data.html>`__ visualized with `
 Installation
 ------------
 
-You can install ``gcmaps`` with ``pip``::
+You can install ``gcmap`` with ``pip``::
 
-    # pip install gcmaps
+    # pip install gcmap
 
 Usage
 -----
