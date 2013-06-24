@@ -10,13 +10,13 @@ from gradient import Gradient
 
 HALF_ROTATION = 180
 
-default_cols = Gradient(((0, 0, 0, 0), (0.5, 0, 0, 255), (1, 255, 255, 255)))
-default_bg = (0, 0, 0)
+DEFAULT_COLS = Gradient(((0, 0, 0, 0), (0.5, 0, 0, 255), (1, 255, 255, 255)))
+DEFAULT_BG = (0, 0, 0)
 
 class GCMapper:
     def __init__(self, width=800,
-            height=None, bgcol=default_bg,
-            cols=default_cols, line_width=1, gc_resolution=100):
+            height=None, bgcol=DEFAULT_BG, proj='eqc',
+            cols=DEFAULT_COLS, line_width=1, gc_resolution=100):
         '''
         Create an object for turning coordinate pairs into an image.
 
@@ -25,6 +25,8 @@ class GCMapper:
             width           the width of the resultant image
             bgcol           the background color of the image,
                             as an (r,g,b) triple
+            proj            the projection name as a string (passed to
+                            pyproj)
             cols            a function which takes one fractional
                             argument and returns a color (r,g,b) triple
             line_width      the width of lines drawn
@@ -41,6 +43,7 @@ class GCMapper:
         self.height = height
         self.width = width
         self.bgcol = bgcol
+        self.proj = proj
         self.line_width = line_width
         self.gc_resolution = gc_resolution
         self.cols = cols
@@ -96,7 +99,7 @@ class GCMapper:
 
         # create the projection. Here we use an equidistant cylindrical projection,
         # but others may work with tweaking of the parameters.
-        proj = Proj(proj='eqc',
+        proj = Proj(proj=self.proj,
                 a=self.width/(2*pi), # set the radius of the earth such that our
                                      # projections work
                 x_0=self.width/2,    # center horizontally on the image

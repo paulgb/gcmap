@@ -16,7 +16,9 @@ class Gradient:
     Uses linear color combinations. Outputs the color as a
     (red, green, blue) triple.
 
-    >>> g = Gradient([(0, 0, 255, 0), (0.5, 255, 255, 0), (1, 255, 255, 255)])
+    >>> g = Gradient([(0, 0, 255, 0),
+    ...               (0.5, 255, 255, 0),
+    ...               (1, 255, 255, 255)])
     >>> g(0)
     (0, 255, 0)
     >>> g(0.5)
