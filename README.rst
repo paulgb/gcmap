@@ -10,6 +10,10 @@ implemented by this module is useful when the data alone are sufficient to show 
 
 The algorithm uses a heuristic which attempts to visualize the *structure* of the pairs rather than their relative importance. In interpreting the results, you should not come to any conclusions about the relative importance of different coordinate pairs.
 
+The `OpenFlights dataset <http://openflights.org/data.html>`__ visualized with ``gcmap``:
+
+.. image:: https://raw.github.com/paulgb/gcmap/master/example.png
+
 Installation
 ------------
 
