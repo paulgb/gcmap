@@ -8,6 +8,8 @@ from math import pi
 
 from gradient import Gradient
 
+HALF_ROTATION = 180
+
 default_cols = Gradient(((0, 0, 0, 0), (0.5, 0, 0, 255), (1, 255, 255, 255)))
 default_bg = (0, 0, 0)
 
@@ -59,7 +61,6 @@ class GCMapper:
             lat2        the latitudes of the destination points
             count       the frequency of each pair
 
-
         Once the data is set, call draw() to render the image.
         '''
         self.data = np.array((lon1, lat1, lon2, lat2)).T
@@ -76,7 +77,7 @@ class GCMapper:
         # if a frequency count is given, take it into account when
         # creating weights. Weights determine the coloring and
         # drawing order of each line.
-        if count:
+        if count is not None:
             self.weight = np.array(count) / dist
         else:
             self.weight = 1 / dist
@@ -85,7 +86,9 @@ class GCMapper:
 
     def draw(self):
         '''
-        Render the image
+        Render the image. Assumes that set_data has already been called.
+
+        Returns a Python Image Library (PIL) Image object.
         '''
 
         img = Image.new('RGB', (self.width, self.height), self.bgcol)
@@ -111,7 +114,7 @@ class GCMapper:
             canvas.line(path, pen)
 
         # loop over every coordinate pair
-        for i, (lon1, lat1, lon2, lat2, count) in enumerate(self.data[self.order]):
+        for i, (lon1, lat1, lon2, lat2) in enumerate(self.data[self.order]):
             # calculate the fraction of the paths already drawn, and use
             # it to create a pen of the appropriate color
             frac = i / float(self.data_size)
@@ -126,9 +129,9 @@ class GCMapper:
             # through the prime meridian) is more than 180 degrees, it's faster
             # to *not* travel through the prime meridian, so we have to special-
             # case the drawing of the lines.
-            if abs(lon1 - lon2) >= 180:
+            if abs(lon1 - lon2) >= HALF_ROTATION:
                 # find the index of the path where the line wraps around the image
-                (cut_point,), = np.where(np.abs(np.diff(pts[:,0])) > 180)
+                (cut_point,), = np.where(np.abs(np.diff(pts[:,0])) > HALF_ROTATION)
                 
                 # draw the two resultant lines separately
                 pts1 = pts[:cut_point,:]
@@ -142,5 +145,5 @@ class GCMapper:
             
         canvas.flush()
 
-        img.save('foo.png')
+        return img
 
