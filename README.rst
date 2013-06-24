@@ -41,7 +41,7 @@ The ``GCMapper()`` constructor can take a number of arguments:
 * ``height`` the width of the output image; defaults to half the width, which fits the world completely for the default projection (equidistant cylindrical)
 * ``bgcol`` the background color as an (r, g, b) triple, eg. (255, 0, 0) for red
 * ``cols`` a ``Gradient`` object or other function from a fraction an (r, g, b) triple
-* ``proj`` the projection to use as a string, passed to pyproj. See `pyprj <http://pyproj.googlecode.com/svn/trunk/docs/pyproj-pysrc.html>`__ for a list of projections
+* ``proj`` the projection to use as a string, passed to pyproj. See `pyproj <http://pyproj.googlecode.com/svn/trunk/docs/pyproj-pysrc.html>`__ for a list of projections
 * ``line_width`` the width of the lines draw, in pixels
 * ``gc_resolution`` the number of straight line segments used to approximate each great-circle curve
 
