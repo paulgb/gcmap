@@ -116,8 +116,8 @@ either direction to create a new color::
     >>> g(0.9)
     (42, 0, 0)
 
-``License``
------------
+License
+-------
 `zlib-style <http://www.gzip.org/zlib/zlib_license.html>`__ as follows:
 
 Copyright (C) 2013 Paul Butler
