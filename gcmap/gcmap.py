@@ -137,8 +137,21 @@ class GCMapper:
                 (cut_point,), = np.where(np.abs(np.diff(pts[:,0])) > HALF_ROTATION)
                 
                 # draw the two resultant lines separately
-                pts1 = pts[:cut_point,:]
+                pts1 = pts[:cut_point+1,:]
                 pts2 = pts[cut_point+1:,:]
+
+                # plot one point after the break on each sides so that the
+                # paths go to the edge of the screen
+                x1, y1 = pts[cut_point+2, :]
+                x2, y2 = pts[cut_point+1, :]
+
+                if x1 > 0:
+                    pts1 = np.vstack((pts1, [-HALF_ROTATION, y1]))
+                    pts2 = np.vstack(([HALF_ROTATION, y2], pts2))
+                else:
+                    pts1 = np.vstack((pts1, [HALF_ROTATION, y1]))
+                    pts2 = np.vstack(([-HALF_ROTATION, y2], pts2))
+
                 draw_(pts1, pen)
                 draw_(pts2, pen)
             else:
