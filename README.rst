@@ -17,9 +17,7 @@ The `OpenFlights dataset <http://openflights.org/data.html>`__ visualized with `
 Installation
 ------------
 
-``gcmap`` requires the Python package ```aggdraw`` <http://www.effbot.org/zone/aggdraw-index.htm>`__ which must first be installed manually.
-
-Once AggDraw is installed you can install ``gcmap`` with ``pip``::
+Install ``gcmap`` using ``pip``::
 
     # pip install gcmap
 
