@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name = 'gcmap',
-    version = '0.0.4',
+    version = '0.0.5',
     url = 'https://github.com/paulgb/gcmap',
     description = 'Great circle visualization of many coordinate pairs',
     author = 'Paul Butler',
