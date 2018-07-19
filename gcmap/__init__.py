@@ -1,4 +1,3 @@
 
-from gcmap import GCMapper
-from gradient import Gradient
-
+from gcmap.gcmap import GCMapper
+from gcmap.gradient import Gradient

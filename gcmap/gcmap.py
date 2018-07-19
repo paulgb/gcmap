@@ -5,18 +5,20 @@ from PIL import Image
 from aggdraw import Draw, Pen
 import operator
 from math import pi
+from functools import reduce
 
-from gradient import Gradient
+from gcmap.gradient import Gradient
 
 HALF_ROTATION = 180
 
 DEFAULT_COLS = Gradient(((0, 0, 0, 0), (0.5, 0, 0, 255), (1, 255, 255, 255)))
 DEFAULT_BG = (0, 0, 0)
 
+
 class GCMapper:
     def __init__(self, width=800,
-            height=None, bgcol=DEFAULT_BG, proj='eqc',
-            cols=DEFAULT_COLS, line_width=1, gc_resolution=100):
+                 height=None, bgcol=DEFAULT_BG, proj='eqc',
+                 cols=DEFAULT_COLS, line_width=1, gc_resolution=100):
         '''
         Create an object for turning coordinate pairs into an image.
 
@@ -38,7 +40,7 @@ class GCMapper:
         '''
 
         if height is None:
-            height = width / 2
+            height = width // 2
 
         self.height = height
         self.width = width
@@ -100,10 +102,11 @@ class GCMapper:
         # create the projection. Here we use an equidistant cylindrical projection,
         # but others may work with tweaking of the parameters.
         proj = Proj(proj=self.proj,
-                a=self.width/(2*pi), # set the radius of the earth such that our
-                                     # projections work
-                x_0=self.width/2,    # center horizontally on the image
-                y_0=self.height/2)   # center verticallly on the image
+                    # set the radius of the earth such that our
+                    a=self.width / (2 * pi),
+                    # projections work
+                    x_0=self.width / 2,    # center horizontally on the image
+                    y_0=self.height / 2)   # center verticallly on the image
 
         # two branches below will use the same sequence of commands to
         # draw a great-circle on the map, so the common elements are wrapped
@@ -123,7 +126,7 @@ class GCMapper:
             frac = i / float(self.data_size)
             pen = Pen(self.cols(frac), self.line_width)
 
-            # find the intermediate coordinates along a line between the two 
+            # find the intermediate coordinates along a line between the two
             # coordinates
             pts = self.geo.npts(lon1, lat1, lon2, lat2, self.gc_resolution)
             pts = np.array(pts)
@@ -134,16 +137,17 @@ class GCMapper:
             # case the drawing of the lines.
             if abs(lon1 - lon2) >= HALF_ROTATION:
                 # find the index of the path where the line wraps around the image
-                (cut_point,), = np.where(np.abs(np.diff(pts[:,0])) > HALF_ROTATION)
-                
+                (cut_point,), = np.where(
+                    np.abs(np.diff(pts[:, 0])) > HALF_ROTATION)
+
                 # draw the two resultant lines separately
-                pts1 = pts[:cut_point+1,:]
-                pts2 = pts[cut_point+1:,:]
+                pts1 = pts[:cut_point + 1, :]
+                pts2 = pts[cut_point + 1:, :]
 
                 # plot one point after the break on each sides so that the
                 # paths go to the edge of the screen
-                x1, y1 = pts[cut_point+2, :]
-                x2, y2 = pts[cut_point+1, :]
+                x1, y1 = pts[cut_point + 2, :]
+                x2, y2 = pts[cut_point + 1, :]
 
                 if x1 > 0:
                     pts1 = np.vstack((pts1, [-HALF_ROTATION, y1]))
@@ -158,8 +162,7 @@ class GCMapper:
                 # the path does not wrap the image, so we can simply draw
                 # it as-is
                 draw_(pts, pen)
-            
+
         canvas.flush()
 
         return img
-
